@@ -1,0 +1,852 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Manipulação de livros e suas dependências ",
+    "version" : "v1",
+    "title" : "Livraria Virtual"
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/IKokiri/Livrariav/v1",
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/livros" : {
+      "get" : {
+        "tags" : [ "livro" ],
+        "summary" : "Busca livros do armazenamento",
+        "operationId" : "getLivros",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "success",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Livro"
+              }
+            }
+          },
+          "400" : {
+            "description" : "não encontrado"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "livro" ],
+        "summary" : "Adiciona um novo livro",
+        "operationId" : "addLivro",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "dados do livro que será adicionado",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Livro"
+          }
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Dados inválidos"
+          }
+        }
+      }
+    },
+    "/livros/autor/{autorId}/livros" : {
+      "get" : {
+        "tags" : [ "livro" ],
+        "summary" : "Busca todos os livros de um autor",
+        "description" : "faz a busca no banco dos livros por autor",
+        "operationId" : "getLivrosByAutor",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "autorId",
+          "in" : "path",
+          "description" : "ID do autor",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "success",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Livro"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Id inválido"
+          },
+          "404" : {
+            "description" : "Não Encontrado"
+          }
+        }
+      }
+    },
+    "/livros/genero/{generoId}/livros" : {
+      "get" : {
+        "tags" : [ "livro" ],
+        "summary" : "Busca todos os livros de um genero",
+        "description" : "faz a busca no banco dos livros por genero",
+        "operationId" : "getLivrosByGenero",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "generoId",
+          "in" : "path",
+          "description" : "ID do genero",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "success",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Livro"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Id inválido"
+          },
+          "404" : {
+            "description" : "Não Encontrado"
+          }
+        }
+      }
+    },
+    "/livros/{isbn}" : {
+      "get" : {
+        "tags" : [ "livro" ],
+        "summary" : "Busca livro por isbn",
+        "description" : "Retorna um unico livro",
+        "operationId" : "getLivroByIsbn",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "isbn",
+          "in" : "path",
+          "description" : "identificador do livro de retorno",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "seccess",
+            "schema" : {
+              "$ref" : "#/definitions/Livro"
+            }
+          },
+          "400" : {
+            "description" : "ISBN inválido"
+          },
+          "404" : {
+            "description" : "Livro não encontrado"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "livro" ],
+        "summary" : "Atualização de um livro",
+        "description" : "Efetua a alteração de um ou varios dados de um livro",
+        "operationId" : "updateLivro",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "isbn",
+          "in" : "path",
+          "description" : "identificador do livro que será alterado",
+          "required" : true,
+          "type" : "number"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "dados do livro que serão alterados",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Livro"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Livro inválido"
+          },
+          "404" : {
+            "description" : "Livro não encontrado"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "livro" ],
+        "summary" : "Remoção de um livro",
+        "description" : "Remove um livro",
+        "operationId" : "deleteLivro",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "isbn",
+          "in" : "path",
+          "description" : "identificador do livro que será removido",
+          "required" : true,
+          "type" : "number"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Livro inválido"
+          },
+          "404" : {
+            "description" : "Livro não encontrado"
+          }
+        }
+      }
+    },
+    "/autores" : {
+      "get" : {
+        "tags" : [ "autor" ],
+        "summary" : "Busca autores do armazenamento",
+        "operationId" : "getAutores",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "success",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Autor"
+              }
+            }
+          },
+          "400" : {
+            "description" : "não encontrado"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "autor" ],
+        "summary" : "Adiciona um novo autor",
+        "operationId" : "addAutor",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "dados do autor que será adicionado",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Autor"
+          }
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Dados inválidos"
+          }
+        }
+      }
+    },
+    "/autores/{id}" : {
+      "get" : {
+        "tags" : [ "autor" ],
+        "summary" : "Busca autor por id",
+        "description" : "Retorna um unico autor",
+        "operationId" : "getAutorById",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "identificador do autor de retorno",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "seccess",
+            "schema" : {
+              "$ref" : "#/definitions/Autor"
+            }
+          },
+          "400" : {
+            "description" : "ID inválido"
+          },
+          "404" : {
+            "description" : "Autor não encontrado"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "autor" ],
+        "summary" : "Atualização de um autor",
+        "description" : "Efetua a alteração de um ou varios dados de um autor",
+        "operationId" : "updateAutor",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "identificador do autor que será alterado",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "dados do autor que serão alterados",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Autor"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Autor inválido"
+          },
+          "404" : {
+            "description" : "Autor não encontrado"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "autor" ],
+        "summary" : "Remoção de um autor",
+        "description" : "Remove um autor",
+        "operationId" : "deleteAutor",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "identificador do autor que será removido",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Autor inválido"
+          },
+          "404" : {
+            "description" : "Autor não encontrado"
+          }
+        }
+      }
+    },
+    "/generos" : {
+      "get" : {
+        "tags" : [ "genero" ],
+        "summary" : "Busca generos do armazenamento",
+        "operationId" : "getGeneros",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "success",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Genero"
+              }
+            }
+          },
+          "400" : {
+            "description" : "não encontrado"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "genero" ],
+        "summary" : "Adiciona um novo genero",
+        "operationId" : "addGenero",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "dados do genero que será adicionado",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Genero"
+          }
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Dados inválidos"
+          }
+        }
+      }
+    },
+    "/generos/{id}" : {
+      "get" : {
+        "tags" : [ "genero" ],
+        "summary" : "Busca genero por id",
+        "description" : "Retorna um unico genero",
+        "operationId" : "getGeneroById",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "identificador do genero de retorno",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "seccess",
+            "schema" : {
+              "$ref" : "#/definitions/Genero"
+            }
+          },
+          "400" : {
+            "description" : "ID inválido"
+          },
+          "404" : {
+            "description" : "Genero não encontrado"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "genero" ],
+        "summary" : "Atualização de um genero",
+        "description" : "Efetua a alteração de um ou varios dados de um genero",
+        "operationId" : "updateGenero",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "identificador do genero que será alterado",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "dados do genero que serão alterados",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Genero"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Genero inválido"
+          },
+          "404" : {
+            "description" : "Genero não encontrado"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "genero" ],
+        "summary" : "Remoção de um genero",
+        "description" : "Remove um genero",
+        "operationId" : "deleteGenero",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "identificador do genero que será removido",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Genero inválido"
+          },
+          "404" : {
+            "description" : "Genero não encontrado"
+          }
+        }
+      }
+    },
+    "/livros/{livroId}/comentarios" : {
+      "post" : {
+        "tags" : [ "comentario" ],
+        "summary" : "Adiciona um comentario para um livro",
+        "operationId" : "addComentario",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "livroId",
+          "in" : "path",
+          "description" : "ID do livro",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "dados do comentrario que será adicionado",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Comentario"
+          }
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Dados inválidos"
+          }
+        }
+      }
+    },
+    "/livros/{livroId}/carrinho" : {
+      "post" : {
+        "tags" : [ "carrinho" ],
+        "summary" : "Adiciona um livro no carrinho",
+        "operationId" : "addLivroCarrinho",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "livroId",
+          "in" : "path",
+          "description" : "ID do livro",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "dados do livro que será adicionado ao carrinho",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Livro"
+          }
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Dados inválidos"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "carrinho" ],
+        "summary" : "Remoção de um livro do carrinho",
+        "description" : "Remove um livro do carrinho",
+        "operationId" : "deleteLivroCarrinho",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "livroId",
+          "in" : "path",
+          "description" : "identificador do livro que será removido do carrinho",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Livro inválido"
+          },
+          "404" : {
+            "description" : "livro não está no carrinho encontrado"
+          }
+        }
+      }
+    },
+    "/livros/{carrinhoId}/pedido" : {
+      "post" : {
+        "tags" : [ "pedido" ],
+        "summary" : "Adiciona um carrinho ao pedido",
+        "operationId" : "addCarrinhoPedido",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "carrinhoId",
+          "in" : "path",
+          "description" : "ID do do carrinho ao ser adicionado ao pedido",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "dados do carrinho que será adicionado ao pedido",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Carrinho"
+          }
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Dados inválidos"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "pedido" ],
+        "summary" : "Remoção de um carrinho do pedido",
+        "description" : "Remove um carrinho de um pedido",
+        "operationId" : "deleteLivroCarrinhoPedido",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "carrinhoId",
+          "in" : "path",
+          "description" : "identificador do carrinho que será removido do pedido",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "carrinho inválido"
+          },
+          "404" : {
+            "description" : "carrinho não está no pedido encontrado"
+          }
+        }
+      }
+    },
+    "/livros/pedido/{pedidoId}/acompanhamento" : {
+      "get" : {
+        "tags" : [ "pedido" ],
+        "summary" : "Busca o status de um pedido",
+        "description" : "faz a busca no banco do status de um pedido",
+        "operationId" : "getStatusPedido",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "pedidoId",
+          "in" : "path",
+          "description" : "ID do pedido",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "seccess",
+            "schema" : {
+              "$ref" : "#/definitions/Pedido"
+            }
+          },
+          "400" : {
+            "description" : "Id inválido"
+          },
+          "404" : {
+            "description" : "Não Encontrado"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Livro" : {
+      "type" : "object",
+      "properties" : {
+        "isbn" : {
+          "type" : "number"
+        },
+        "titulo" : {
+          "type" : "string"
+        },
+        "autor" : {
+          "$ref" : "#/definitions/Autor"
+        },
+        "genero" : {
+          "$ref" : "#/definitions/Genero"
+        },
+        "data" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "preco" : {
+          "type" : "number"
+        }
+      },
+      "xml" : {
+        "name" : "Livro"
+      },
+      "example" : {
+        "preco" : 5.962133916683182377482808078639209270477294921875,
+        "data" : "2000-01-23T04:56:07.000+00:00",
+        "isbn" : 0.80082819046101150206595775671303272247314453125,
+        "genero" : {
+          "genero" : "genero",
+          "id" : 1
+        },
+        "titulo" : "titulo",
+        "autor" : {
+          "nome" : "nome",
+          "id" : 6
+        }
+      }
+    },
+    "Autor" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "nome" : {
+          "type" : "string"
+        }
+      },
+      "xml" : {
+        "name" : "Autor"
+      },
+      "example" : {
+        "nome" : "nome",
+        "id" : 6
+      }
+    },
+    "Genero" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "genero" : {
+          "type" : "string"
+        }
+      },
+      "xml" : {
+        "name" : "Genero"
+      },
+      "example" : {
+        "genero" : "genero",
+        "id" : 1
+      }
+    },
+    "Comentario" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer"
+        },
+        "nome" : {
+          "type" : "string"
+        },
+        "data" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "comentario" : {
+          "type" : "string"
+        }
+      },
+      "xml" : {
+        "name" : "Genero"
+      },
+      "example" : {
+        "data" : "2000-01-23T04:56:07.000+00:00",
+        "nome" : "nome",
+        "id" : 0,
+        "comentario" : "comentario"
+      }
+    },
+    "Carrinho" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "number"
+        },
+        "livro" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Livro"
+          }
+        },
+        "data" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "total" : {
+          "type" : "number"
+        }
+      },
+      "xml" : {
+        "name" : "Carrinho"
+      },
+      "example" : {
+        "total" : 6.02745618307040320615897144307382404804229736328125,
+        "data" : "2000-01-23T04:56:07.000+00:00",
+        "livro" : [ {
+          "preco" : 5.962133916683182377482808078639209270477294921875,
+          "data" : "2000-01-23T04:56:07.000+00:00",
+          "isbn" : 0.80082819046101150206595775671303272247314453125,
+          "genero" : {
+            "genero" : "genero",
+            "id" : 1
+          },
+          "titulo" : "titulo",
+          "autor" : {
+            "nome" : "nome",
+            "id" : 6
+          }
+        }, {
+          "preco" : 5.962133916683182377482808078639209270477294921875,
+          "data" : "2000-01-23T04:56:07.000+00:00",
+          "isbn" : 0.80082819046101150206595775671303272247314453125,
+          "genero" : {
+            "genero" : "genero",
+            "id" : 1
+          },
+          "titulo" : "titulo",
+          "autor" : {
+            "nome" : "nome",
+            "id" : 6
+          }
+        } ],
+        "id" : 0.80082819046101150206595775671303272247314453125
+      }
+    },
+    "Pedido" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "number"
+        },
+        "livro" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Livro"
+          }
+        },
+        "status" : {
+          "type" : "string"
+        },
+        "data" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "total" : {
+          "type" : "number"
+        }
+      },
+      "xml" : {
+        "name" : "Carrinho"
+      },
+      "example" : {
+        "total" : 6.02745618307040320615897144307382404804229736328125,
+        "data" : "2000-01-23T04:56:07.000+00:00",
+        "livro" : [ {
+          "preco" : 5.962133916683182377482808078639209270477294921875,
+          "data" : "2000-01-23T04:56:07.000+00:00",
+          "isbn" : 0.80082819046101150206595775671303272247314453125,
+          "genero" : {
+            "genero" : "genero",
+            "id" : 1
+          },
+          "titulo" : "titulo",
+          "autor" : {
+            "nome" : "nome",
+            "id" : 6
+          }
+        }, {
+          "preco" : 5.962133916683182377482808078639209270477294921875,
+          "data" : "2000-01-23T04:56:07.000+00:00",
+          "isbn" : 0.80082819046101150206595775671303272247314453125,
+          "genero" : {
+            "genero" : "genero",
+            "id" : 1
+          },
+          "titulo" : "titulo",
+          "autor" : {
+            "nome" : "nome",
+            "id" : 6
+          }
+        } ],
+        "id" : 0.80082819046101150206595775671303272247314453125,
+        "status" : "status"
+      }
+    }
+  }
+}
